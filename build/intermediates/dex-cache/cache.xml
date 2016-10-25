@@ -3,39 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_47a2993dde1122cc249c54879a1f00de1d182e3c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.0"
         sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
         <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-24.2.1_174e8699764857d225678696b465fc448abf9227/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-24.2.1_f96e13b85006f872116f939d49e9d67b3b751ce1/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_f02c7c5245b7ecffea84527592bd45173516864c/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -61,26 +34,8 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.0"
-        sha1="428bc37a8aaa1291129c837b824b7399033c10e9">
+        sha1="10a87388c8107507c6baab61ccf96c0e03d26dff">
         <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_17e027447956af98e5fd38ca123b4ed7905a8ff5/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.1/support-annotations-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.2.1_42940fc320702ef20949fe3f5b7ae122a39027ed/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_59945fbf1725b160be65a39606e594654d069dea/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -90,24 +45,6 @@
         revision="24.0.0"
         sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
         <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-24.2.1_ca555f51297adc1032231aaf9ab762552a26021f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="33901a455043d60f772c9e9c63f29a51eea4a010">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_1c94476281d9f65c8a0ed884c837d7b1bb9768d2/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.0"
-        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
-        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-24.2.1_9f7d396b57e8ceddbb31cfe43c2e25aab420c9a6/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -135,6 +72,69 @@
         revision="24.0.0"
         sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
         <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-24.2.1_06547036dc0757688438916c31294552f098f3f4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_47a2993dde1122cc249c54879a1f00de1d182e3c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-24.2.1_f96e13b85006f872116f939d49e9d67b3b751ce1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_f02c7c5245b7ecffea84527592bd45173516864c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.1/support-annotations-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.2.1_42940fc320702ef20949fe3f5b7ae122a39027ed/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_59945fbf1725b160be65a39606e594654d069dea/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="ef68986c69c95a2dfd8ef3643d8ecb72e31bca56">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_1c94476281d9f65c8a0ed884c837d7b1bb9768d2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.0"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="/Users/mmittek/dev/Android/MotoGym/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-24.2.1_9f7d396b57e8ceddbb31cfe43c2e25aab420c9a6/classes.dex" />
     </item>
     <item
         is-multidex="true"

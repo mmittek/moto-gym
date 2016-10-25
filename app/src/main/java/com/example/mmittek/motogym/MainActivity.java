@@ -74,6 +74,7 @@ class FileViewModel extends Observable implements View.OnClickListener {
 
 class DataBuffer extends Observable {
 
+    protected long mRecordsCounter = 0;
     protected long mTimestamp;
     protected float mAccX;
     protected float mAccY;
@@ -89,6 +90,27 @@ class DataBuffer extends Observable {
     protected double mLonGPS;
 
 
+    public DataBuffer() {
+        reset();
+    }
+
+    public void reset() {
+        mRecordsCounter = 0;
+        mTimestamp = 0;
+        mAccX = 0;
+        mAccY = 0;
+        mAccZ = 0;
+        mLAccX = 0;
+        mLAccY = 0;
+        mLAccZ = 0;
+        mGravX= 0;
+        mGravY = 0;
+        mGravZ = 0;
+        mSpeedGPS = 0;
+        mLatGPS = 0;
+        mLonGPS = 0;
+    }
+
     public final String getCSVHeader() {
         String header = "timestamp, accx, accy, accz, laccx, laccy, laccz, gravx, gravy, gravz, speedgps, latgps, longps\r\n";
         return header;
@@ -103,6 +125,15 @@ class DataBuffer extends Observable {
         "\r\n";
     }
 
+
+    public void setChanged() {
+        super.setChanged();
+        mRecordsCounter++;
+    }
+
+    public final long getRecordsCounter() {
+        return mRecordsCounter;
+    }
 
     public void setAccXYZ(long timestamp, float[] xyz) {
         boolean changed = false;
@@ -168,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
     File mFile;
 
+    TextView mRecordsCounterTextView;
     DataBuffer mDataBuffer;
 
     ToggleButton mRecordToggleButton;
@@ -184,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mRecordFileNameTextView = (TextView)findViewById(R.id.recorded_file_name_text_view);
 
         mDataBuffer = new DataBuffer();
-
+        mRecordsCounterTextView = (TextView) findViewById(R.id.records_counter_text_view);
 
         mRecordsListView = (ListView)findViewById(R.id.recorded_files_list_view);
         mRecordsArrayAdapter = new ArrayAdapter<FileViewModel>(this, R.layout.records_list_item){
@@ -264,6 +296,10 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
         arrayAdapter.add("asd");
         */
+
+
+        registerListeners();
+
     }
 
     public final DataBuffer getDataBuffer() {
@@ -373,9 +409,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    protected final void registerListeners() {
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mLinearAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mRotation, SensorManager.SENSOR_DELAY_NORMAL);
@@ -383,11 +417,20 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mSensorManager.registerListener(this, mGravity, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    /*
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    */
+
+    /*
     @Override
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this);
     }
+*/
 
     protected String getDefaultFilename() {
         String defaultFilename = getCurrentTimestampString() + ".csv";
@@ -417,6 +460,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
             String csvHeader = mDataBuffer.getCSVHeader();
             mBufferedWriter.write( csvHeader );
 
+            mDataBuffer.reset();
             mDataBuffer.addObserver(this);
 
             refreshListOfRecords();
@@ -478,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
             try {
                 mBufferedWriter.write(csvRecord);
+                mRecordsCounterTextView.setText( String.format("Records: %d", mDataBuffer.getRecordsCounter() ) );
             }catch (IOException e){
 
             }
