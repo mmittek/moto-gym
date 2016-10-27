@@ -3,7 +3,7 @@ function [t vq] = sampleUniformly(x,y)
     ym = zeros(numel(xu), size(y,2) );
     for xi=1:numel(xu)
         idx = find( x==xu(xi) );
-        ym(xi) = mean( y(idx,:),1 );
+        ym(xi,:) = mean( y(idx,:),1 );
     end
 
     N = numel(xu);
