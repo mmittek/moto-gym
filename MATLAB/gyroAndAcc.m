@@ -27,7 +27,9 @@ alpha = 0.7;
 grav = zeros(1,3);
 pos = zeros( size(data,1) ,3);
 [gpsx,gpsy,gpsz] = gpsToXYZ(data(:,LAT), data(:,LON), data(:,ALT));
-for i=2:size(data,1)
+
+
+for i=250:size(data,1)
     
     % Extraction and normalization
     grav = alpha.*grav + (1-alpha).*data(i, [ACCX, ACCY, ACCZ]);
@@ -35,9 +37,15 @@ for i=2:size(data,1)
     accNoDc = data(i,[ACCX,ACCY,ACCZ])-grav;
     pos(i,:) = pos(i-1,:) + 0.5.*accNoDc.*(dt/1000).^2;
     
+
+    
     if(mod(i,10)==0)
+
+        [absOrient] = getAbsoluteOrientation(grav, magnetometer(i,:));
+
+        
         figure(2)
-        subplot(1,4,1);
+        subplot(1,5,1);
         plot( 0,0 );
         plotVec3D( grav(1) ,grav(3),grav(2));
         axis equal
@@ -45,7 +53,8 @@ for i=2:size(data,1)
         grid on;
         title('Gravity from acceleration');
         drawnow;
-        subplot(1,4,2);
+        
+        subplot(1,5,2);
         plot(0,0);
          plotVec3D( data(i,GRAVX) ,data(i,GRAVZ),data(i,GRAVY));
         axis equal
@@ -55,7 +64,7 @@ for i=2:size(data,1)
         drawnow;
 
 
-        subplot(1,4,3);
+        subplot(1,5,3);
         plot(0,0);
          plotVec3D( accNoDc(1) ,accNoDc(3),accNoDc(2));
         axis equal
@@ -64,7 +73,7 @@ for i=2:size(data,1)
         title('Acceleration without DC');
         drawnow;
 
-        subplot(1,4,4);
+        subplot(1,5,4);
         plot(0,0);
         magnVec = magnetometer( i,: )./norm(magnetometer( i,: ));
          plotVec3D( magnVec(1) ,magnVec(3),magnVec(2));
@@ -72,6 +81,18 @@ for i=2:size(data,1)
         axis([-1,1,-1,1,-1,1]);
         grid on;
         title('Magnetometer');
+        drawnow;
+
+        subplot(1,5,5);
+        plot(0,0);
+        omega = data(i,[ANGLEX, ANGLEY, ANGLEZ]);
+        omegaMag = norm( omega );
+        omegan = omega./omegaMag;
+         plotVec3D( omegan(1) ,omegan(3),omegan(2) );
+        axis equal
+        axis([-1,1,-1,1,-1,1]);
+        grid on;
+        title('Gyro');
         drawnow;
 
 
