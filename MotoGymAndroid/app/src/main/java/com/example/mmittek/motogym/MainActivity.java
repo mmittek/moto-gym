@@ -45,6 +45,8 @@ import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.example.mmittek.motogym.DataBuffer.convertToAbsoluteTimestampMillis;
+
 
 class FileViewModel extends Observable implements View.OnClickListener {
     File mFile;
@@ -147,6 +149,11 @@ class DataBuffer extends Observable {
     }
 
 
+    public static final long convertToAbsoluteTimestampMillis(long sensorTimestampNs) {
+        long timeInMillis = (System.currentTimeMillis()
+                + (sensorTimestampNs- System.nanoTime())/1000000L);
+        return timeInMillis;
+    }
 
     public final String getCSVHeader() {
         String header = "timestamp, accx, accy, accz, laccx, laccy, laccz, gravx, gravy, gravz, magfieldx, magfieldy, magfieldz, anglex, angley, anglez, rot0, rot1, rot2, rot3, rot4, rot5, rot6, rot7, rot8, speedgps, latgps, longps, altgps, accgps\r\n";
@@ -427,8 +434,10 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
                 //makeUseOfNewLocation(location);
                 mainActivity.onLocation(location);
 
+                long absoluteTimetampMillis = DataBuffer.convertToAbsoluteTimestampMillis(location.getElapsedRealtimeNanos());
+
                 mainActivity.getDataBuffer().setGPS(
-                        location.getElapsedRealtimeNanos(),
+                        absoluteTimetampMillis,
                         location.getSpeed(),
                         location.getLatitude(),
                         location.getLongitude(),
@@ -570,16 +579,17 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
         sampleCounter++;
         boolean updateGUI = ( sampleCounter%mUpdateGUISampleInterval == 0 );
+        long absoluteTimestampMillis = convertToAbsoluteTimestampMillis(event.timestamp);
 
         if(event.sensor == mAccelerometer) {
-            mDataBuffer.setAccXYZ(event.timestamp, event.values );
+            mDataBuffer.setAccXYZ(absoluteTimestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_accelerometer_text_view);
                 accDataTextView.setText(String.format("acc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
             }
         } else if(event.sensor == mLinearAcceleration) {
-            mDataBuffer.setLinearAccXYZ( event.timestamp, event.values );
+            mDataBuffer.setLinearAccXYZ(absoluteTimestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_linear_accelerometer_text_view);
                 accDataTextView.setText(String.format("linacc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
@@ -591,14 +601,14 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
             }
 
         }else if(event.sensor == mMagneticField) {
-            mDataBuffer.setMagFieldXYZ( event.timestamp, event.values );
+            mDataBuffer.setMagFieldXYZ( absoluteTimestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_magnetic_field_text_view);
                 accDataTextView.setText(String.format("magfield: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
             }
         } else if(event.sensor == mGravity) {
-            mDataBuffer.setGravXYZ( event.timestamp, event.values );
+            mDataBuffer.setGravXYZ( absoluteTimestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_gravity_text_view);
                 accDataTextView.setText(String.format("grav: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
