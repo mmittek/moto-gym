@@ -3,7 +3,7 @@ function [data] = loadCSVAndPreprocess(csvFilename)
     data = csvread(csvFilename,1);
     data = sortrows(data,1);
     data = data(1:end,:);
-    data(:,1) = (data(:,1)-min(data(:,1)))./1000000;    % get down to milliseconds
+    data(:,1) = data(:,1)-data(1,1);
 
     % Average over milliseconds
     data(:,1) = ceil(data(:,1));

@@ -1,5 +1,5 @@
 init;
-data = csvread('20160927_122606_534.csv',1);
+data = csvread('20160927_045751_771.csv',1);
 data = sortrows(data,1);
 data = data(100:end,:);
 data(:,1) = data(:,1)-data(1,1);
