@@ -701,12 +701,12 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     public static String getCurrentTimestampString() {
         Calendar calendar = Calendar.getInstance();
 
-        String timestampString = "" + calendar.get(Calendar.YEAR) + "-" +
-                String.format("%02d", calendar.get(Calendar.MONTH)) + "-" +
-                String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + " " +
-                String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" +
-                String.format("%02d", calendar.get(Calendar.MINUTE)) + ":" +
-                String.format("%02d", calendar.get(Calendar.SECOND)) + ":"  +
+        String timestampString = "" + calendar.get(Calendar.YEAR) +
+                String.format("%02d", calendar.get(Calendar.MONTH)) +
+                String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + "_" +
+                String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) +
+                String.format("%02d", calendar.get(Calendar.MINUTE)) +
+                String.format("%02d", calendar.get(Calendar.SECOND)) + "_"  +
                 String.format("%03d", calendar.get(Calendar.MILLISECOND));
         return timestampString;
     }
