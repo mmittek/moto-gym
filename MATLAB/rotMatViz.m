@@ -1,4 +1,4 @@
-data = csvread('tilt_fwd.csv', 1);
+data = csvread('tilt_side.csv', 1);
 
 
 data = sortrows(data,1);

@@ -4,7 +4,7 @@ function [x,y,z] = gpsToXYZ(lat, lon, alt)
 
     r = 6371000 + alt;
     
-    r = r*0.000621371;
+    r = r.*0.000621371;
     
     x = r.*cos( lat ).*cos( lon );
     y = r.*cos( lat ).*sin( lon );

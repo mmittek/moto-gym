@@ -1,8 +1,7 @@
 [data] = loadCSVAndPreprocess('C:\Users\mmittek2\Box Sync\MotoGymData\20161026 RideToWork\2016-09-26 11_00_07_477.csv');
 
 [t data dt] = sampleUniformly( data(:,1), data(:,2:end) );
-t = t(10:end);
-data = data(10:end,:);
+
 
 
 data = [t data];
@@ -10,12 +9,10 @@ data = [t data];
 accel = data(:,2:4);
 angles = data(:,14:16);
 
-plotR = 1;
-plotC = 4;
+
 
 load('lowpass.mat')
-accelDc = filter(LowPass, accel);
-accelNoDc = accel - accelDc;
+%accelDC = filter(LowPass, );
 
 
 grav = data(:,8:10);
@@ -27,18 +24,19 @@ y = y-y(1);
 z = z-z(1);
 
 rotMats = data(:,17:17+9-1);
-step = 1;
+step = 10;
 
 boxwh= [0.5 2];
 Box = [ -boxwh(1),-boxwh(2); -boxwh(1),boxwh(2); boxwh(1),boxwh(2); boxwh(1),-boxwh(2); -boxwh(1),-boxwh(2) ]./50;
 
 figure(1)
 clf;
-for i=size(x,1)-10000:step:size(x,1)
+for i=step+1:step:size(x,1)
     accelMag = norm( accel(i,:) )/10;
 
+    accelDc = mean(accel( max([1, i-300]):i ,:));
+    accelNoDc = accel - accelDc;
 
-    accAngle = accelDc(i,[1,3]);
     
     angle = mean( angles( max([i-10,1]):i ,1) );
     
@@ -51,7 +49,7 @@ for i=size(x,1)-10000:step:size(x,1)
 %     vidFrame = imresize(readFrame(videoReader), [1080,1920]./8);
     
     figure(1)
-%    subplot(1,plotC,1)
+    subplot(1,2,1)
     plot(x(1:i),y(1:i), 'r-');
     
     
@@ -71,8 +69,6 @@ for i=size(x,1)-10000:step:size(x,1)
         
         
         plot( x(i)+RotBox(:,1), y(i)+RotBox(:,2), 'm-.' );
-        
-        plot( x(i)+accAngle(1), y(i)+accAngle(2), 'b-.' );
 
     hold off;
     grid on;
@@ -82,26 +78,14 @@ for i=size(x,1)-10000:step:size(x,1)
     ylabel('Y [miles]');
     title('GPS data');
     
-    figure(2)
-     subplot(1,plotC,2)
-     plot( [0, 0 ],  [0, accelDc(i,1)  ],  'b-x' );
-    grid on;
-    axis([-10,10,-10,10]);
-    title('X');
-     subplot(1,plotC,3)
-     
-     plot( [0, 0 ],  [0, accelDc(i,2)  ],  'b-x' );
-    grid on;
-    axis([-10,10,-10,10]);
-    title('Y');
-
-         subplot(1,plotC,4)
-     
-     plot( [0, 0 ],  [0, accelDc(i,3)  ],  'b-x' );
-    grid on;
-    axis([-10,10,-10,10]);
-    title('Z');
-
+     subplot(1,2,2)
+     csx = sum(accelNoDc(1:i,1));
+     csy = sum(accelNoDc(1:i,2));
+             plot( [0, csx/100 ],  [0, csy /100  ],  'b-x' );
+grid on;
+axis([-10,10,-10,10]);
+xlabel(sprintf('csx: %.2f', csx));
+ylabel(sprintf('csy: %.2f', csy));
 
 %     imshow(vidFrame);    
     
