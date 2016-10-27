@@ -1,4 +1,5 @@
-data = csvread('20160927_045751_771.csv',1);
+init;
+data = csvread('20160927_122606_534.csv',1);
 data = sortrows(data,1);
 data = data(100:end,:);
 data(:,1) = data(:,1)-data(1,1);
@@ -7,7 +8,7 @@ N = size(data,1);
 t = linspace( 0, data(end,1), N );
 [t vq] = sampleUniformly( data(:,1) ,data(:,2:end) );
 
-data = [t' vq];
+data = [t vq];
 
 fs = 1000/mean(data(2:end,1)-data(1:end-1,1))
 ref = [0,0,-1]; % vector pointing into the devices screen
