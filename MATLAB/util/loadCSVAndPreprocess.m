@@ -1,4 +1,8 @@
 function [data] = loadCSVAndPreprocess(csvFilename)
+
+    
+    
+    
     % Load, sort, trim and adjust timestamps
     data = csvread(csvFilename,1);
     data = sortrows(data,1);
@@ -16,9 +20,10 @@ function [data] = loadCSVAndPreprocess(csvFilename)
     data = datam;
 
     % Quality control and threshold
-    gps = data(:, end-3:end);
-    idx = find( gps(:,4) < 12 & gps(:,1) ~=0  & gps(:,2) ~= 0);
-    data = data(idx,:);
-    data = data(2:end,:);   % skip first one
+%     gps = data(:, end-3:end);
+%     idx = find( gps(:,4) < 12 & gps(:,1) ~=0  & gps(:,2) ~= 0);
+%     data = data(idx,:);
+%     data = data(2:end,:);   % skip first one
 
+    
 end

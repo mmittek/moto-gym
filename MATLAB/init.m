@@ -1,3 +1,8 @@
+% Paths
+addpath('./util');
+addpath('./filters');
+
+% Data fields
 TIMESTAMP = 1;
 ACCX = 2;
 ACCY = 3;
