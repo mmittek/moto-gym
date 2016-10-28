@@ -2,7 +2,7 @@
 init;
 
 box = makeBox( 0.5,1,2 );
-data = loadCSVAndPreprocess('20160927_122606_534.csv');
+data = loadCSVAndPreprocess('../Data/20160927_192817_803_5_figure_eights.csv');
 
 % Trimming
 data = data(2000:end,:);
@@ -31,9 +31,10 @@ pos = zeros( size(data,1) ,3);
 
 for i=250:size(data,1)
     
+    dt = data(i,1) - data(i-1,1);
     % Extraction and normalization
     grav = alpha.*grav + (1-alpha).*data(i, [ACCX, ACCY, ACCZ]);
-    grav = 9.8.*grav./norm(grav);
+%    grav = 9.8.*grav./norm(grav);
     accNoDc = data(i,[ACCX,ACCY,ACCZ])-grav;
     pos(i,:) = pos(i-1,:) + 0.5.*accNoDc.*(dt/1000).^2;
     
@@ -44,78 +45,91 @@ for i=250:size(data,1)
         [absOrient] = getAbsoluteOrientation(grav, magnetometer(i,:));
 
         
-        figure(2)
-        subplot(1,5,1);
-        plot( 0,0 );
-        plotVec3D( grav(1) ,grav(3),grav(2));
-        axis equal
-        axis([-10,10,-10,10,-10,10]);
-        grid on;
-        title('Gravity from acceleration');
-        drawnow;
-        
-        subplot(1,5,2);
-        plot(0,0);
-         plotVec3D( data(i,GRAVX) ,data(i,GRAVZ),data(i,GRAVY));
-        axis equal
-        axis([-10,10,-10,10,-10,10]);
-        grid on;
-        title('Gravity from readings');
-        drawnow;
-
-
-        subplot(1,5,3);
-        plot(0,0);
-         plotVec3D( accNoDc(1) ,accNoDc(3),accNoDc(2));
-        axis equal
-        axis([-10,10,-10,10,-10,10]);
-        grid on;
-        title('Acceleration without DC');
-        drawnow;
-
-        subplot(1,5,4);
-        plot(0,0);
-        magnVec = magnetometer( i,: )./norm(magnetometer( i,: ));
-         plotVec3D( magnVec(1) ,magnVec(3),magnVec(2));
-        axis equal
-        axis([-1,1,-1,1,-1,1]);
-        grid on;
-        title('Magnetometer');
-        drawnow;
-
-        subplot(1,5,5);
-        plot(0,0);
-        omega = data(i,[ANGLEX, ANGLEY, ANGLEZ]);
-        omegaMag = norm( omega );
-        omegan = omega./omegaMag;
-         plotVec3D( omegan(1) ,omegan(3),omegan(2) );
-        axis equal
-        axis([-1,1,-1,1,-1,1]);
-        grid on;
-        title('Gyro');
-        drawnow;
+%         figure(2)
+%         subplot(1,5,1);
+%         plot( 0,0 );
+%         plotVec3D( grav(1) ,grav(3),grav(2));
+%         axis equal
+%         axis([-10,10,-10,10,-10,10]);
+%         grid on;
+%         title('Gravity from acceleration');
+%         drawnow;
+%         
+%         subplot(1,5,2);
+%         plot(0,0);
+%          plotVec3D( data(i,GRAVX) ,data(i,GRAVZ),data(i,GRAVY));
+%         axis equal
+%         axis([-10,10,-10,10,-10,10]);
+%         grid on;
+%         title('Gravity from readings');
+%         drawnow;
+% 
+% 
+%         subplot(1,5,3);
+%         plot(0,0);
+%          plotVec3D( accNoDc(1) ,accNoDc(3),accNoDc(2));
+%         axis equal
+%         axis([-10,10,-10,10,-10,10]);
+%         grid on;
+%         title('Acceleration without DC');
+%         drawnow;
+% 
+%         subplot(1,5,4);
+%         plot(0,0);
+%         magnVec = magnetometer( i,: )./norm(magnetometer( i,: ));
+%          plotVec3D( magnVec(1) ,magnVec(3),magnVec(2));
+%         axis equal
+%         axis([-1,1,-1,1,-1,1]);
+%         grid on;
+%         title('Magnetometer');
+%         drawnow;
+% 
+%         subplot(1,5,5);
+%         plot(0,0);
+%         omega = data(i,[ANGLEX, ANGLEY, ANGLEZ]);
+%         omegaMag = norm( omega );
+%         omegan = omega./omegaMag;
+%          plotVec3D( omegan(1) ,omegan(3),omegan(2) );
+%         axis equal
+%         axis([-1,1,-1,1,-1,1]);
+%         grid on;
+%         title('Gyro');
+%         drawnow;
 
 
         figure(3)
         subplot(1,2,1);
+%
+            plot( pos(1:i,1), pos(1:i,3), 'r-x' );
 
-        plot( data(1:i,1)./1000, pos(1:i,1), 'r-x' );
-        hold on;
-        plot( data(1:i,1)./1000, pos(1:i,2), 'g-x' );
-        plot( data(1:i,1)./1000, pos(1:i,3) , 'b-x');
-        hold off;
-        grid on;
-        xlabel('Time [s]');
+%         plot( data(1:i,1)./1000, pos(1:i,1), 'r-x' );
+%         hold on;
+%         plot( data(1:i,1)./1000, pos(1:i,2), 'g-x' );
+%         plot( data(1:i,1)./1000, pos(1:i,3) , 'b-x');
+%         hold off;
+         grid on;
+         axis equal;
+%        xlabel('Time [s]');
         title('Position over time');
 
         subplot(1,2,2);
         plot( gpsx, gpsy, 'g-' );
         hold on;
         plot( gpsx(i), gpsy(i), 'rO' );
+        
+        ov = diag(absOrient);
+        ov = 100.*ov./norm(ov);
+        
+        plot( [gpsx(i) gpsx(i)+ov(1)], [gpsy(i) gpsy(i)+ov(2)], 'r-x' );
+        
+        plot( [gpsx(i) gpsx(i)+data(i,MAGX)], [gpsy(i) gpsy(i)+data(i,MAGZ)], 'r-x' );
+        
+        
         text( gpsx(i), gpsy(i), sprintf('%.1f', data(i,SPEED)) );
         hold off;
         grid on;
         axis equal;
+        axis([min(gpsx),max(gpsx),min(gpsy),max(gpsy)]);
         title('GPS position');
         drawnow;
     end
