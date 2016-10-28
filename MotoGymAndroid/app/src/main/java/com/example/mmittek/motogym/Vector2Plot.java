@@ -17,6 +17,7 @@ public class Vector2Plot extends View {
     protected Paint mPaint;
     protected double[] mVector;
     protected int[] mColors;
+    protected double normalization = 9.80665;
 
     public Vector2Plot(Context context) {
         super(context);
@@ -53,6 +54,8 @@ public class Vector2Plot extends View {
             invalidate();
         }
     }
+
+
 
     @Override
     public void onDraw(Canvas canvas) {

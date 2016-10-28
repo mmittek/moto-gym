@@ -131,11 +131,11 @@
             <com.example.mmittek.motogym.Vector2Plot
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/zy_vector_plot"/>
+                android:id="@+id/yz_vector_plot"/>
             <com.example.mmittek.motogym.Vector2Plot
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/xz_vector_plot"/>
+                android:id="@+id/zx_vector_plot"/>
 
         </LinearLayout>
 

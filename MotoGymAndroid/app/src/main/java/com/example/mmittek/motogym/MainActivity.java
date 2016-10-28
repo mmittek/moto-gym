@@ -46,8 +46,6 @@ import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.example.mmittek.motogym.DataBuffer.convertToAbsoluteTimestampMillis;
-
 
 class FileViewModel extends Observable implements View.OnClickListener {
     File mFile;
@@ -333,8 +331,8 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     TextView mCameraInfoTextView;
 
     Vector2Plot mVectorPlotXY;
-    Vector2Plot mVectorPlotZY;
-    Vector2Plot mVectorPlotXZ;
+    Vector2Plot mVectorPlotYZ;
+    Vector2Plot mVectorPlotZX;
 
     EditText mRecordLabelEditText;
 
@@ -357,8 +355,8 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mRecordLabelEditText = (EditText)findViewById(R.id.record_label_edit_text);
 
         mVectorPlotXY = (Vector2Plot) findViewById(R.id.xy_vector_plot);
-        mVectorPlotZY = (Vector2Plot) findViewById(R.id.zy_vector_plot);
-        mVectorPlotXZ = (Vector2Plot) findViewById(R.id.xz_vector_plot);
+        mVectorPlotYZ = (Vector2Plot) findViewById(R.id.yz_vector_plot);
+        mVectorPlotZX = (Vector2Plot) findViewById(R.id.zx_vector_plot);
 
         mHandler = new Handler(getMainLooper()) {
             @Override
@@ -477,10 +475,11 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
                 //makeUseOfNewLocation(location);
                 mainActivity.onLocation(location);
 
-                long absoluteTimetampMillis = DataBuffer.convertToAbsoluteTimestampMillis(location.getElapsedRealtimeNanos());
+//                long timetampMillis = DataBuffer.convertToAbsoluteTimestampMillis(location.getElapsedRealtimeNanos());
+                long timetampMillis = location.getElapsedRealtimeNanos()/1000000L;
 
                 mainActivity.getDataBuffer().setGPS(
-                        absoluteTimetampMillis,
+                        timetampMillis,
                         location.getSpeed(),
                         location.getLatitude(),
                         location.getLongitude(),
@@ -511,6 +510,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mLinearAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
+//        mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -622,10 +622,11 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
         sampleCounter++;
         boolean updateGUI = ( sampleCounter%mUpdateGUISampleInterval == 0 );
-        long absoluteTimestampMillis = convertToAbsoluteTimestampMillis(event.timestamp);
+        //long timestampMillis = convertToAbsoluteTimestampMillis(event.timestamp);
+        long timestampMillis = event.timestamp/1000000L;
 
         if(event.sensor == mAccelerometer) {
-            mDataBuffer.setAccXYZ(absoluteTimestampMillis, event.values );
+            mDataBuffer.setAccXYZ(timestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_accelerometer_text_view);
                 accDataTextView.setText(String.format("acc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
@@ -635,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
             }
         } else if(event.sensor == mLinearAcceleration) {
-            mDataBuffer.setLinearAccXYZ(absoluteTimestampMillis, event.values );
+            mDataBuffer.setLinearAccXYZ(timestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_linear_accelerometer_text_view);
                 accDataTextView.setText(String.format("linacc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
@@ -647,20 +648,22 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
             }
 
         }else if(event.sensor == mMagneticField) {
-            mDataBuffer.setMagFieldXYZ( absoluteTimestampMillis, event.values );
+            mDataBuffer.setMagFieldXYZ( timestampMillis, event.values );
+            mDataFusion.feedMagneticField( new double[]{ event.values[0], event.values[1], event.values[2] } );
+
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_magnetic_field_text_view);
                 accDataTextView.setText(String.format("magfield: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
             }
         } else if(event.sensor == mGravity) {
-            mDataBuffer.setGravXYZ( absoluteTimestampMillis, event.values );
+            mDataBuffer.setGravXYZ( timestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_gravity_text_view);
                 accDataTextView.setText(String.format("grav: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
             }
         } else if(event.sensor == mGyroscope) {
-            mDataBuffer.setGyroXYZ( absoluteTimestampMillis, event.values );
+            mDataBuffer.setGyroXYZ( timestampMillis, event.values );
             if(updateGUI) {
                 TextView tv = (TextView) findViewById(R.id.sensors_gyroscope_text_view);
                 tv.setText(String.format("gyro: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
@@ -808,9 +811,14 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         } else if(observable == mDataFusion) {
 
             double[] gravity = mDataFusion.getGravity();
-            mVectorPlotXY.setVector( new double[]{gravity[0], gravity[1]} );
-            mVectorPlotXZ.setVector( new double[]{gravity[0], gravity[2]} );
-            mVectorPlotZY.setVector( new double[]{gravity[2], gravity[1]} );
+            double[] linearAcceleration = mDataFusion.getLinearAcceleration();
+            double[] magneticField = mDataFusion.getMagneticField();
+            double[] absoluteOrientation = mDataFusion.getAbsoluteOrientation();
+            double[] vec = absoluteOrientation;
+
+            mVectorPlotXY.setVector( new double[]{vec[0], vec[1]} );
+            mVectorPlotYZ.setVector( new double[]{vec[2], vec[1]} );
+            mVectorPlotZX.setVector( new double[]{vec[0], vec[2]} );
 
 
         }
