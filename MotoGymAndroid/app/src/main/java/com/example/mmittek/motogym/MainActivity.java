@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
     Handler mHandler;
 
-    int mUpdateGUISampleInterval = 2;
+    int mUpdateGUISampleInterval = 10;
     long sampleCounter = 0;
 
     TextView mCameraInfoTextView;
@@ -641,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
             mDataBuffer.setAccXYZ(timestampMillis, event.values );
             if(updateGUI) {
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_accelerometer_text_view);
-                accDataTextView.setText(String.format("acc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
+                accDataTextView.setText(String.format("acc (%.1f): %.2f, %.2f, %.2f", mDataFusion.getAccSamplingRate(), event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
 
                 mDataFusion.feedAccelerationXYZ(new double[]{ event.values[0], event.values[1], event.values[2] });

@@ -15,6 +15,9 @@ public class DataFusion extends Observable {
     double[] mAbsoluteOrientation;
     double[] mAbsoluteAcceleration;
 
+    long mPrevAccSampleTimestamp;
+    double mAccSamplingRateSPS;
+
     public DataFusion() {
 
         mGravity = new double[]{0,0,0};
@@ -22,9 +25,25 @@ public class DataFusion extends Observable {
         mMagneticField = new double[]{0,0,0};
         mAbsoluteOrientation = new double[]{0,0,0};
         mAbsoluteAcceleration = new double[]{0,0,0};
+
+        mPrevAccSampleTimestamp = 0;
+        mAccSamplingRateSPS = 0;
+    }
+
+    public final double getAccSamplingRate() {
+        return mAccSamplingRateSPS;
     }
 
     public void feedAccelerationXYZ(double[] accelerationXYZ) {
+
+        // SAMPLING RATE ESTIMATION
+        long now = System.currentTimeMillis();
+        double dt = now-mPrevAccSampleTimestamp;
+        mPrevAccSampleTimestamp = now;
+        double a = 0.9;
+        mAccSamplingRateSPS = a*mAccSamplingRateSPS + (1-a)*1000/dt;
+
+
         for(int i=0; i<3; i++) {
             mGravity[i] = mAlpha*accelerationXYZ[i] + (1-mAlpha)*accelerationXYZ[i];
         }
