@@ -28,6 +28,8 @@ function processOrientation(grav, ref)
         R4(1:3,1:3) = R;
         boxr = box4d*R4;
         boxr = (R4*box4d')';
+        
+        
         plot3( boxr(:,1), boxr(:,3), boxr(:,2), 'b--x' );
 
         hold off;
