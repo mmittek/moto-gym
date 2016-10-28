@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,6 +102,10 @@ class DataBuffer extends Observable {
     protected float mMagFieldZ;
     protected float mSpeedGPS;
 
+    protected float mGyroX;
+    protected float mGyroY;
+    protected float mGyroZ;
+
     protected float[] mRotMat;
     protected float[] mOrientAngles;
 
@@ -136,6 +141,9 @@ class DataBuffer extends Observable {
         mLonGPS = 0;
         mAltGPS = 0;
         mAccGPS = 0;
+        mGyroX = 0;
+        mGyroY = 0;
+        mGyroZ = 0;
 
         mRotMat = new float[9];
         for(int i=0; i<9; i++) {
@@ -156,13 +164,14 @@ class DataBuffer extends Observable {
     }
 
     public final String getCSVHeader() {
-        String header = "timestamp, accx, accy, accz, laccx, laccy, laccz, gravx, gravy, gravz, magfieldx, magfieldy, magfieldz, anglex, angley, anglez, rot0, rot1, rot2, rot3, rot4, rot5, rot6, rot7, rot8, speedgps, latgps, longps, altgps, accgps\r\n";
+        String header = "timestamp, accx, accy, accz, gyrox, gyroy, gyroz, laccx, laccy, laccz, gravx, gravy, gravz, magfieldx, magfieldy, magfieldz, anglex, angley, anglez, rot0, rot1, rot2, rot3, rot4, rot5, rot6, rot7, rot8, speedgps, latgps, longps, altgps, accgps\r\n";
         return header;
     }
 
     public final String getCSVRecord() {
         return "" + mTimestamp + "," +
                 mAccX + "," + mAccY + "," + mAccZ + "," +
+                mGyroX + "," + mGyroY + "," + mGyroZ + "," +
                 mLAccX + "," + mLAccY + "," + mLAccZ + "," +
                 mGravX + "," + mGravY + "," + mGravZ + "," +
                 mMagFieldX + "," + mMagFieldY + "," + mMagFieldZ + "," +
@@ -189,6 +198,19 @@ class DataBuffer extends Observable {
     public final long getRecordsCounter() {
         return mRecordsCounter;
     }
+
+    public void setGyroXYZ(long timestamp, float[] xyz) {
+        boolean changed = false;
+        if(xyz[0] != mGyroX) { mGyroX = xyz[0]; changed = true;}
+        if(xyz[1] != mGyroY) { mGyroY = xyz[1]; changed = true;}
+        if(xyz[2] != mGyroZ) { mGyroZ = xyz[2]; changed = true;}
+        if(changed) {
+            mTimestamp = timestamp;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
 
     public void setAccXYZ(long timestamp, float[] xyz) {
         boolean changed = false;
@@ -288,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     Sensor mRotation;
     Sensor mMagneticField;
     Sensor mGravity;
+    Sensor mGyroscope;
 
     File mFile;
 
@@ -304,10 +327,19 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
     Handler mHandler;
 
-    int mUpdateGUISampleInterval = 10;
+    int mUpdateGUISampleInterval = 2;
     long sampleCounter = 0;
 
     TextView mCameraInfoTextView;
+
+    Vector2Plot mVectorPlotXY;
+    Vector2Plot mVectorPlotZY;
+    Vector2Plot mVectorPlotXZ;
+
+    EditText mRecordLabelEditText;
+
+    DataFusion mDataFusion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,6 +348,17 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mRecordToggleButton = (ToggleButton)findViewById(R.id.recording_toggle_button);
         mRecordFileNameTextView = (TextView)findViewById(R.id.recorded_file_name_text_view);
 
+
+        mDataFusion = new DataFusion();
+        mDataFusion.addObserver(this);
+
+        // Get angle plot
+
+        mRecordLabelEditText = (EditText)findViewById(R.id.record_label_edit_text);
+
+        mVectorPlotXY = (Vector2Plot) findViewById(R.id.xy_vector_plot);
+        mVectorPlotZY = (Vector2Plot) findViewById(R.id.zy_vector_plot);
+        mVectorPlotXZ = (Vector2Plot) findViewById(R.id.xz_vector_plot);
 
         mHandler = new Handler(getMainLooper()) {
             @Override
@@ -469,8 +512,8 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
         mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         /*
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -587,6 +630,9 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_accelerometer_text_view);
                 accDataTextView.setText(String.format("acc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
+
+                mDataFusion.feedAccelerationXYZ(new double[]{ event.values[0], event.values[1], event.values[2] });
+
             }
         } else if(event.sensor == mLinearAcceleration) {
             mDataBuffer.setLinearAccXYZ(absoluteTimestampMillis, event.values );
@@ -613,6 +659,12 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
                 TextView accDataTextView = (TextView) findViewById(R.id.sensors_gravity_text_view);
                 accDataTextView.setText(String.format("grav: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
             }
+        } else if(event.sensor == mGyroscope) {
+            mDataBuffer.setGyroXYZ( absoluteTimestampMillis, event.values );
+            if(updateGUI) {
+                TextView tv = (TextView) findViewById(R.id.sensors_gyroscope_text_view);
+                tv.setText(String.format("gyro: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
+            }
         }
 
     }
@@ -628,6 +680,8 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
         mSensorManager.registerListener(this, mRotation, sensorDelay);
         mSensorManager.registerListener(this, mMagneticField, sensorDelay);
         mSensorManager.registerListener(this, mGravity, sensorDelay);
+        mSensorManager.registerListener(this, mGyroscope, sensorDelay);
+
     }
 
     /*
@@ -645,8 +699,14 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     }
 */
 
-    protected String getDefaultFilename() {
-        String defaultFilename = getCurrentTimestampString() + ".csv";
+    protected String getDefaultFilename(String postfix) {
+        String defaultFilename;
+        if((postfix == null) || (postfix.length() == 0)) {
+            defaultFilename= getCurrentTimestampString() + ".csv";
+
+        } else {
+             defaultFilename = getCurrentTimestampString() +"_" + postfix +".csv";
+        }
         return defaultFilename;
     }
 
@@ -662,7 +722,11 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
 
     protected boolean startRecording() {
-        String fileName = getDefaultFilename();
+        String postfix = mRecordLabelEditText.getText().toString();
+
+        String fileName = getDefaultFilename(postfix);
+
+
         mFile = new File(getFilesDir(), fileName);
         try {
             if (!mFile.createNewFile() || !mFile.canWrite()) {
@@ -734,16 +798,20 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     @Override
     public void update(Observable observable, Object o) {
         if( observable == mDataBuffer ) {
-
             String csvRecord = mDataBuffer.getCSVRecord();
             if(mBufferedWriter == null)  return;
-
             try {
                 mBufferedWriter.write(csvRecord);
-                mRecordsCounterTextView.setText( String.format("Records: %d", mDataBuffer.getRecordsCounter() ) );
+                mRecordsCounterTextView.setText( String.format("%d", mDataBuffer.getRecordsCounter() ) );
             }catch (IOException e){
-
             }
+        } else if(observable == mDataFusion) {
+
+            double[] gravity = mDataFusion.getGravity();
+            mVectorPlotXY.setVector( new double[]{gravity[0], gravity[1]} );
+            mVectorPlotXZ.setVector( new double[]{gravity[0], gravity[2]} );
+            mVectorPlotZY.setVector( new double[]{gravity[2], gravity[1]} );
+
 
         }
     }
