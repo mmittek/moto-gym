@@ -25,10 +25,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -120,6 +122,8 @@ class DataBuffer extends Observable {
     }
 
     public void reset() {
+
+
         mRecordsCounter = 0;
         mTimestamp = 0;
         mAccX = 0;
@@ -299,7 +303,7 @@ class DataBuffer extends Observable {
 
 // Following : https://developer.android.com/guide/topics/sensors/sensors_overview.html
 
-public class MainActivity extends AppCompatActivity implements Observer, SensorEventListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements Observer, SensorEventListener, View.OnClickListener, Spinner.OnItemSelectedListener {
 
 
     SensorManager mSensorManager;
@@ -338,6 +342,8 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
     DataFusion mDataFusion;
 
+    Spinner mSensorDelaySpinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,6 +355,12 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
         mDataFusion = new DataFusion();
         mDataFusion.addObserver(this);
+
+        mSensorDelaySpinner = (Spinner)findViewById(R.id.sensor_delay_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.sensor_delay_strings, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSensorDelaySpinner.setAdapter(adapter);
+        mSensorDelaySpinner.setOnItemSelectedListener(this);
 
         // Get angle plot
 
@@ -673,18 +685,23 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
     }
 
 
+    protected void setSensorDelay( int sensorDelay ) {
+        mSensorManager.unregisterListener(this);
+        registerListeners(sensorDelay);
+    }
 
     protected final void registerListeners() {
-        int sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
+        registerListeners(SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
-
+    protected final void registerListeners(int sensorDelay) {
+//        int sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
         mSensorManager.registerListener(this, mAccelerometer, sensorDelay);
         mSensorManager.registerListener(this, mLinearAcceleration, sensorDelay);
         mSensorManager.registerListener(this, mRotation, sensorDelay);
         mSensorManager.registerListener(this, mMagneticField, sensorDelay);
         mSensorManager.registerListener(this, mGravity, sensorDelay);
         mSensorManager.registerListener(this, mGyroscope, sensorDelay);
-
     }
 
     /*
@@ -823,4 +840,39 @@ public class MainActivity extends AppCompatActivity implements Observer, SensorE
 
         }
     }
+
+
+    // -------------------- SPINNER START
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        int sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
+
+        switch(i) {
+            case 0:
+                // normal
+                sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
+                Log.d("main", "normal sensors");
+            break;
+
+            case 1:
+                // game
+                sensorDelay = SensorManager.SENSOR_DELAY_GAME;
+                Log.d("main", "game sensors");
+            break;
+
+            case 2:
+                // fastest
+                sensorDelay = SensorManager.SENSOR_DELAY_FASTEST;
+                Log.d("main", "fastest sensors");
+            break;
+        }
+
+        setSensorDelay(sensorDelay);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+    // -------------------- SPINNER STOP
 }

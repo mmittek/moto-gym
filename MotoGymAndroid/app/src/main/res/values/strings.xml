@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MotoGym</string>
+
+
+
+
+    <string-array name="sensor_delay_strings">
+        <item>Normal</item>
+        <item>Game</item>
+        <item>Fastest</item>
+    </string-array>
+
+
 </resources>
