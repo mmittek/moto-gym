@@ -4,7 +4,7 @@ function processOrientation(grav, ref)
     box2d = [ -w,-h; -w,h; w,h; w,-h; -w,-h ];
     box3d = [box2d zeros(size(box2d,1),1)];
     box4d = [ box3d zeros(size(box3d,1),1) ];
-    for i=1:10:size(grav,1)
+    for i=1:1:size(grav,1)
         figure(1)
 
         subplot(2,2,1);
@@ -14,6 +14,7 @@ function processOrientation(grav, ref)
 
         side = cross(ref,gravn);
         up = cross(side,gravn);
+        
 
         R = [ gravn; side; up ]';
         cmap = colormap(hsv(3));

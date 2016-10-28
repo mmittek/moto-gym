@@ -1,5 +1,5 @@
 init;
-data = csvread('../Data/20160927_191339_105_joergensen_to_hyvee.csv',1);
+data = csvread('../Data/20160927_231506_654_from84andAHomeJacket.csv',1);
 data = sortrows(data,1);
 data = data(100:end,:);
 data(:,1) = data(:,1)-data(1,1);

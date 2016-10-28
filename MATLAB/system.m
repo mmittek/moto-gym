@@ -1,4 +1,4 @@
-[data] = loadCSVAndPreprocess('C:\Users\mmittek2\Box Sync\MotoGymData\20161026 RideToWork\2016-09-26 11_00_07_477.csv');
+[data] = loadCSVAndPreprocess('../Data/2016-09-26 11_00_07_477.csv');
 
 [t data dt] = sampleUniformly( data(:,1), data(:,2:end) );
 t = t(10:end);

@@ -2,7 +2,7 @@
 init;
 
 box = makeBox( 0.5,1,2 );
-data = loadCSVAndPreprocess('../Data/20160927_192817_803_5_figure_eights.csv');
+data = loadCSVAndPreprocess('../Data/20160927_191339_105_joergensen_to_hyvee.csv');
 
 % Trimming
 data = data(2000:end,:);
@@ -45,56 +45,56 @@ for i=250:size(data,1)
         [absOrient] = getAbsoluteOrientation(grav, magnetometer(i,:));
 
         
-%         figure(2)
-%         subplot(1,5,1);
-%         plot( 0,0 );
-%         plotVec3D( grav(1) ,grav(3),grav(2));
-%         axis equal
-%         axis([-10,10,-10,10,-10,10]);
-%         grid on;
-%         title('Gravity from acceleration');
-%         drawnow;
-%         
-%         subplot(1,5,2);
-%         plot(0,0);
-%          plotVec3D( data(i,GRAVX) ,data(i,GRAVZ),data(i,GRAVY));
-%         axis equal
-%         axis([-10,10,-10,10,-10,10]);
-%         grid on;
-%         title('Gravity from readings');
-%         drawnow;
-% 
-% 
-%         subplot(1,5,3);
-%         plot(0,0);
-%          plotVec3D( accNoDc(1) ,accNoDc(3),accNoDc(2));
-%         axis equal
-%         axis([-10,10,-10,10,-10,10]);
-%         grid on;
-%         title('Acceleration without DC');
-%         drawnow;
-% 
-%         subplot(1,5,4);
-%         plot(0,0);
-%         magnVec = magnetometer( i,: )./norm(magnetometer( i,: ));
-%          plotVec3D( magnVec(1) ,magnVec(3),magnVec(2));
-%         axis equal
-%         axis([-1,1,-1,1,-1,1]);
-%         grid on;
-%         title('Magnetometer');
-%         drawnow;
-% 
-%         subplot(1,5,5);
-%         plot(0,0);
-%         omega = data(i,[ANGLEX, ANGLEY, ANGLEZ]);
-%         omegaMag = norm( omega );
-%         omegan = omega./omegaMag;
-%          plotVec3D( omegan(1) ,omegan(3),omegan(2) );
-%         axis equal
-%         axis([-1,1,-1,1,-1,1]);
-%         grid on;
-%         title('Gyro');
-%         drawnow;
+        figure(2)
+        subplot(1,5,1);
+        plot( 0,0 );
+        plotVec3D( grav(1) ,grav(3),grav(2));
+        axis equal
+        axis([-10,10,-10,10,-10,10]);
+        grid on;
+        title('Gravity from acceleration');
+        drawnow;
+        
+        subplot(1,5,2);
+        plot(0,0);
+         plotVec3D( data(i,GRAVX) ,data(i,GRAVZ),data(i,GRAVY));
+        axis equal
+        axis([-10,10,-10,10,-10,10]);
+        grid on;
+        title('Gravity from readings');
+        drawnow;
+
+
+        subplot(1,5,3);
+        plot(0,0);
+         plotVec3D( accNoDc(1) ,accNoDc(3),accNoDc(2));
+        axis equal
+        axis([-10,10,-10,10,-10,10]);
+        grid on;
+        title('Acceleration without DC');
+        drawnow;
+
+        subplot(1,5,4);
+        plot(0,0);
+        magnVec = magnetometer( i,: )./norm(magnetometer( i,: ));
+         plotVec3D( magnVec(1) ,magnVec(3),magnVec(2));
+        axis equal
+        axis([-1,1,-1,1,-1,1]);
+        grid on;
+        title('Magnetometer');
+        drawnow;
+
+        subplot(1,5,5);
+        plot(0,0);
+        omega = data(i,[ANGLEX, ANGLEY, ANGLEZ]);
+        omegaMag = norm( omega );
+        omegan = omega./omegaMag;
+         plotVec3D( omegan(1) ,omegan(3),omegan(2) );
+        axis equal
+        axis([-1,1,-1,1,-1,1]);
+        grid on;
+        title('Gyro');
+        drawnow;
 
 
         figure(3)
