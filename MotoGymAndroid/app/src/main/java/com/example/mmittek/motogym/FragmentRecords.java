@@ -13,19 +13,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Observable;
+import java.util.Observer;
 
 
 class FileViewModel extends Observable implements View.OnClickListener {
@@ -66,13 +71,21 @@ class FileViewModel extends Observable implements View.OnClickListener {
  * Created by mmittek on 10/28/16.
  */
 
-public class FragmentRecords extends Fragment implements View.OnClickListener {
+public class FragmentRecords extends Fragment implements View.OnClickListener, Observer {
 
     ArrayAdapter<FileViewModel> mRecordsArrayAdapter;
     ListView mRecordsListView;
     Button mDeleteButton;
     Button mShareButton;
     ToggleButton mRecordToggleButton;
+    DataBuffer mDataBuffer;
+    File mFile;
+    BufferedWriter mBufferedWriter;
+    long mRecordsCounter;
+    TextView mRecordFileNameTextView;
+    EditText mRecordLabelEditText;
+    TextView mRecordsCounterTextView;
+    boolean mRecording = false;
 
 
     @Override
@@ -95,6 +108,16 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+
+        mRecordFileNameTextView = (TextView)view.findViewById(R.id.recorded_file_name_text_view);
+        mRecordLabelEditText = (EditText)view.findViewById(R.id.record_label_edit_text);
+
+        mDataBuffer = new DataBuffer();
+        mDataBuffer.addObserver(this);
+
+        mRecordsCounterTextView = (TextView)view.findViewById(R.id.records_counter_text_view);
+
         mRecordsListView = (ListView)view.findViewById(R.id.recorded_files_list_view);
         mRecordsArrayAdapter = new ArrayAdapter<FileViewModel>(getContext(), R.layout.records_list_item){
 
@@ -144,6 +167,12 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
         refreshListOfRecords();
     }
 
+    public DataBuffer getDataBuffer() {
+        if(mDataBuffer == null) {
+            mDataBuffer = new DataBuffer();
+        }
+        return mDataBuffer;
+    }
 
     public final void deleteSelectedFiles() {
         for(int i=0; i<mRecordsArrayAdapter.getCount(); i++) {
@@ -213,10 +242,49 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
 
 
     protected boolean startRecording() {
-        return true;
+        String timestampString = getCurrentTimestampString();
+        String recordLabel = mRecordLabelEditText.getText().toString();
+
+        String filename = timestampString + ".csv";
+        if(recordLabel != null && recordLabel.length() > 0) {
+            filename = timestampString + "_" + recordLabel + ".csv";
+        }
+
+        String csvHeader = mDataBuffer.getCSVHeader();
+
+
+        try {
+            File file = new File(getContext().getFilesDir(), filename);
+            if(!file.createNewFile()) return false;
+            if(!file.canWrite()) return false;
+
+            BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
+            bufferedWriter.write(csvHeader);
+
+            mFile = file;
+            mBufferedWriter = bufferedWriter;
+            mRecordsCounter = 0;
+            mDataBuffer.addObserver(this);
+            refreshListOfRecords();
+            mRecording = true;
+            return true;
+        }catch(IOException e) {
+            return false;
+        }
     }
 
     protected void stopRecording() {
+        mDataBuffer.deleteObserver(this);
+
+        try {
+            mBufferedWriter.flush();
+            mBufferedWriter.close();
+            mBufferedWriter = null;
+            mFile = null;
+        }catch(IOException e) {
+        }
+        refreshListOfRecords();
+        mRecording = false;
     }
 
     public static String getCurrentTimestampString() {
@@ -244,4 +312,23 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
 
         }
     }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
+        if(!mRecording) return;
+
+        if(observable == mDataBuffer) {
+
+            mRecordsCounterTextView.setText( String.format("%d", mDataBuffer.getRecordsCounter()) );
+
+            String record = mDataBuffer.getCSVRecord();
+            try {
+                mBufferedWriter.write(record);
+            } catch(IOException e) {
+
+            }
+        }
+    }
+
 }
