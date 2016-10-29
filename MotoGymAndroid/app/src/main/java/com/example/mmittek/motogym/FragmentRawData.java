@@ -1,6 +1,5 @@
 package com.example.mmittek.motogym;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,14 +25,6 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
 
 
     long sampleCounter = 0;
-    SensorManager mSensorManager;
-    Sensor mAccelerometer;
-    Sensor mLinearAcceleration;
-    Sensor mRotation;
-    Sensor mMagneticField;
-    Sensor mGravity;
-    Sensor mGyroscope;
-
     Spinner mSensorDelaySpinner;
 
 
@@ -83,17 +74,7 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
         };
 
 
-        mSensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
 
-
-
-
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mLinearAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
 
     }
@@ -123,24 +104,8 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
       //  rotationMatrixTextView.setText(String.format("rotmat: %.2f, %.2f, %.2f \n %.2f, %.2f, %.2f \n %.2f, %.2f, %.2f", rotationMatrix[0], rotationMatrix[1], rotationMatrix[2], rotationMatrix[3], rotationMatrix[4], rotationMatrix[5], rotationMatrix[6], rotationMatrix[7], rotationMatrix[8] ));
     }
 
-    protected void setSensorDelay( int sensorDelay ) {
-        mSensorManager.unregisterListener(this);
-        registerListeners(sensorDelay);
-    }
 
-    protected final void registerListeners() {
-        registerListeners(SensorManager.SENSOR_DELAY_UI);
-    }
 
-    protected final void registerListeners(int sensorDelay) {
-//        int sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
-        mSensorManager.registerListener(this, mAccelerometer, sensorDelay);
-        mSensorManager.registerListener(this, mLinearAcceleration, sensorDelay);
-        mSensorManager.registerListener(this, mRotation, sensorDelay);
-        mSensorManager.registerListener(this, mMagneticField, sensorDelay);
-        mSensorManager.registerListener(this, mGravity, sensorDelay);
-        mSensorManager.registerListener(this, mGyroscope, sensorDelay);
-    }
 
 
     @Override
@@ -153,7 +118,7 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
         sampleCounter++;
         long timestampMillis = event.timestamp/1000000L;
 
-        if(event.sensor == mAccelerometer) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             //mDataBuffer.setAccXYZ(timestampMillis, event.values );
             //if(updateGUI) {
                 TextView accDataTextView = (TextView) getView().findViewById(R.id.sensors_accelerometer_text_view);
@@ -163,19 +128,19 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
               //  mDataFusion.feedAccelerationXYZ(new double[]{ event.values[0], event.values[1], event.values[2] });
 
             //}
-        } else if(event.sensor == mLinearAcceleration) {
+        } else if(event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             //mDataBuffer.setLinearAccXYZ(timestampMillis, event.values );
             //if(updateGUI) {
                 TextView accDataTextView = (TextView) getView().findViewById(R.id.sensors_linear_accelerometer_text_view);
                 accDataTextView.setText(String.format("linacc: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
             //}
-        } else if(event.sensor == mRotation) {
+        } else if(event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             //if(updateGUI) {
                 TextView accDataTextView = (TextView) getView().findViewById(R.id.sensors_rotation_text_view);
                 accDataTextView.setText(String.format("rot: %.2f, %.2f, %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2], event.values[3], event.values[4]));
             //}
 
-        }else if(event.sensor == mMagneticField) {
+        }else if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             //mDataBuffer.setMagFieldXYZ( timestampMillis, event.values );
             //mDataFusion.feedMagneticField( new double[]{ event.values[0], event.values[1], event.values[2] } );
 
@@ -184,13 +149,13 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
                 accDataTextView.setText(String.format("magfield: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
                 updateAnglesAndRotMatTextViews();
             //}
-        } else if(event.sensor == mGravity) {
+        } else if(event.sensor.getType() == Sensor.TYPE_GRAVITY) {
             //mDataBuffer.setGravXYZ( timestampMillis, event.values );
             //if(updateGUI) {
                 TextView accDataTextView = (TextView) getView().findViewById(R.id.sensors_gravity_text_view);
                 accDataTextView.setText(String.format("grav: %.2f, %.2f, %.2f", event.values[0], event.values[1], event.values[2]));
             //}
-        } else if(event.sensor == mGyroscope) {
+        } else if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             //mDataBuffer.setGyroXYZ( timestampMillis, event.values );
             //if(updateGUI) {
                 TextView tv = (TextView) getView().findViewById(R.id.sensors_gyroscope_text_view);
@@ -226,7 +191,6 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
                 break;
         }
 
-        setSensorDelay(sensorDelay);
     }
 
     @Override

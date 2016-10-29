@@ -2,24 +2,21 @@ package com.example.mmittek.motogym;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.camera2.CameraManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -247,33 +244,22 @@ class DataBuffer extends Observable {
 // Following : https://developer.android.com/guide/topics/sensors/sensors_overview.html
 
 public class MainActivity extends AppCompatActivity implements Observer, View.OnClickListener {
-
-
-
-
-    File mFile;
-
-    TextView mRecordsCounterTextView;
     DataBuffer mDataBuffer;
-
-    CameraManager mCameraManager;
-
     ToggleButton mRecordToggleButton;
     TextView mRecordFileNameTextView;
-    BufferedWriter mBufferedWriter;
-    ArrayAdapter<FileViewModel> mRecordsArrayAdapter;
-    ListView mRecordsListView;
-
-    Handler mHandler;
-
-    int mUpdateGUISampleInterval = 10;
-
-    TextView mCameraInfoTextView;
-
-
     EditText mRecordLabelEditText;
-
     DataFusion mDataFusion;
+
+
+    SensorManager mSensorManager;
+    Sensor mAccelerometer;
+    Sensor mLinearAcceleration;
+    Sensor mRotation;
+    Sensor mMagneticField;
+    Sensor mGravity;
+    Sensor mGyroscope;
+
+
 
 
 
@@ -282,13 +268,23 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mLinearAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+
+        Fragment rawDataFragment = getSupportFragmentManager().findFragmentById(R.id.raw_data_fragment);
+        registerListeners( (SensorEventListener)rawDataFragment, SensorManager.SENSOR_DELAY_UI);
 
 
 
         mRecordToggleButton = (ToggleButton)findViewById(R.id.recording_toggle_button);
         mRecordFileNameTextView = (TextView)findViewById(R.id.recorded_file_name_text_view);
-
-
         mDataFusion = new DataFusion();
         mDataFusion.addObserver(this);
 
@@ -296,18 +292,13 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         // Get angle plot
 
         mRecordLabelEditText = (EditText)findViewById(R.id.record_label_edit_text);
-
-
-
-        FragmentRawData rawDataFragment = (FragmentRawData)getSupportFragmentManager().findFragmentById(R.id.raw_data_fragment); //(FragmentRawData)findViewById(R.id.raw_data_fragment);
+//        FragmentRawData rawDataFragment = (FragmentRawData)getSupportFragmentManager().findFragmentById(R.id.raw_data_fragment); //(FragmentRawData)findViewById(R.id.raw_data_fragment);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },1 );
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) rawDataFragment);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) rawDataFragment);
-
-
     }
 
     public final DataBuffer getDataBuffer() {
@@ -331,6 +322,26 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     @Override
     public void onClick(View view) {
 
+    }
+
+    protected final void registerListeners(SensorEventListener sensorEventListener) {
+        registerListeners(sensorEventListener, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    protected void setSensorDelay(SensorEventListener sensorEventListener, int sensorDelay ) {
+        mSensorManager.unregisterListener(sensorEventListener);
+        registerListeners(sensorEventListener, sensorDelay);
+    }
+
+
+    protected final void registerListeners(SensorEventListener sensorEventListener, int sensorDelay) {
+//        int sensorDelay = SensorManager.SENSOR_DELAY_NORMAL;
+        mSensorManager.registerListener(sensorEventListener, mAccelerometer, sensorDelay);
+        mSensorManager.registerListener(sensorEventListener, mLinearAcceleration, sensorDelay);
+        mSensorManager.registerListener(sensorEventListener, mRotation, sensorDelay);
+        mSensorManager.registerListener(sensorEventListener, mMagneticField, sensorDelay);
+        mSensorManager.registerListener(sensorEventListener, mGravity, sensorDelay);
+        mSensorManager.registerListener(sensorEventListener, mGyroscope, sensorDelay);
     }
 
     @Override
