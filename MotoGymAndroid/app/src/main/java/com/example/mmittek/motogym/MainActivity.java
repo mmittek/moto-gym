@@ -353,6 +353,10 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         mSensorManager.registerListener(sensorEventListener, mGyroscope, sensorDelay);
     }
 
+    public void resetDataFusion(View view) {
+        mDataFusion.reset();
+    }
+
     @Override
     public void update(Observable observable, Object o) {
 

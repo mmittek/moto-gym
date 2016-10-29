@@ -39,6 +39,8 @@ public class DataFusion extends Observable implements SensorEventListener {
         mPrevAccSampleTimestamp = 0;
         mAccSamplingRateSPS = 0;
         mLastAngleTimestamp = 0;
+        setChanged();
+        notifyObservers();
     }
 
     public final double getAccSamplingRate() {
@@ -129,7 +131,7 @@ public class DataFusion extends Observable implements SensorEventListener {
                 }
             } else {
                 double magnitude = getMagnitude( sensorEvent.values );
-                double dt =   (sensorEvent.timestamp/1000000L - mLastAngleTimestamp)/16.0;
+                double dt =   (sensorEvent.timestamp/1000000L - mLastAngleTimestamp)/18.0;
                 for(int i=0; i<3; i++) {
                     mAngle[i] += sensorEvent.values[i]*dt;   // rectangular term
                 }
