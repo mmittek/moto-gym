@@ -46,7 +46,24 @@
 
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_x"/>
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_y"/>
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_z"/>
+
+        </LinearLayout>
 
 
 

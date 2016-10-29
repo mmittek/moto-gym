@@ -259,6 +259,9 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     Sensor mGravity;
     Sensor mGyroscope;
 
+    AnglePlot mAnglePlotX;
+    AnglePlot mAnglePlotY;
+    AnglePlot mAnglePlotZ;
 
 
 
@@ -285,9 +288,15 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
         mRecordToggleButton = (ToggleButton)findViewById(R.id.recording_toggle_button);
         mRecordFileNameTextView = (TextView)findViewById(R.id.recorded_file_name_text_view);
+
         mDataFusion = new DataFusion();
+        registerListeners( mDataFusion, SensorManager.SENSOR_DELAY_FASTEST );
         mDataFusion.addObserver(this);
 
+
+        mAnglePlotX = (AnglePlot) findViewById(R.id.angle_plot_x);
+        mAnglePlotY = (AnglePlot) findViewById(R.id.angle_plot_y);
+        mAnglePlotZ = (AnglePlot) findViewById(R.id.angle_plot_z);
 
         // Get angle plot
 
@@ -346,30 +355,27 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
     @Override
     public void update(Observable observable, Object o) {
-        /*
-        if( observable == mDataBuffer ) {
-            String csvRecord = mDataBuffer.getCSVRecord();
-            if(mBufferedWriter == null)  return;
-            try {
-                mBufferedWriter.write(csvRecord);
-                mRecordsCounterTextView.setText( String.format("%d", mDataBuffer.getRecordsCounter() ) );
-            }catch (IOException e){
-            }
-        } else if(observable == mDataFusion) {
+
+    if(observable == mDataFusion) {
 
             double[] gravity = mDataFusion.getGravity();
             double[] linearAcceleration = mDataFusion.getLinearAcceleration();
             double[] magneticField = mDataFusion.getMagneticField();
             double[] absoluteOrientation = mDataFusion.getAbsoluteOrientation();
             double[] vec = absoluteOrientation;
+            double[] angle = mDataFusion.getAngle();
 
-            mVectorPlotXY.setVector( new double[]{vec[0], vec[1]} );
-            mVectorPlotYZ.setVector( new double[]{vec[2], vec[1]} );
-            mVectorPlotZX.setVector( new double[]{vec[0], vec[2]} );
+        mAnglePlotX.setAngle( (float)angle[0] );
+        mAnglePlotY.setAngle( (float)angle[1] );
+        mAnglePlotZ.setAngle( (float)angle[2] );
+
+//            mVectorPlotXY.setVector( new double[]{vec[0], vec[1]} );
+//            mVectorPlotYZ.setVector( new double[]{vec[2], vec[1]} );
+//            mVectorPlotZX.setVector( new double[]{vec[0], vec[2]} );
 
 
         }
-        */
+
     }
 
 

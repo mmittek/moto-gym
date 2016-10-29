@@ -57,11 +57,19 @@ public class AnglePlot extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(0,0,canvasWidth,canvasHeight, mPaint);
 
+        canvas.drawText("" + mAngle, canvasWidth/2, canvasHeight/2, mPaint);
+
+
         canvas.translate( canvasWidth/2, canvasHeight/2 );
         canvas.rotate( mAngle );
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaint.setColor(Color.RED);
-        canvas.drawRect(-canvasWidth*0.3f,-canvasHeight*0.2f,canvasWidth*0.3f,canvasHeight*0.2f, mPaint);
+        canvas.drawRect(-canvasWidth*0.2f,-canvasHeight*0.3f,canvasWidth*0.2f,canvasHeight*0.3f, mPaint);
+
+
+        mPaint.setColor(Color.BLUE);
+        mPaint.setStrokeWidth(10);
+        canvas.drawLine( 0,0,0, canvasHeight*0.3f, mPaint );
 
     }
 }
