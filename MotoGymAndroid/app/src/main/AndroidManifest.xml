@@ -10,6 +10,9 @@
         android:name="android.hardware.location.gps"
         android:required="true" />
 
+    <!-- OPEN GL FOR PLOTTING -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
     <!-- TO BE ABLE TO STORE AND SHARE THE RECORDS -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
