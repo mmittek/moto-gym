@@ -22,4 +22,36 @@
         app:headerLayout="@layout/nav_header_main2"
         app:menu="@menu/activity_main2_drawer" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.mmittek.motogym.FragmentRecords"
+                android:id="@+id/records_fragment"
+                ></fragment>
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.mmittek.motogym.FragmentRawData"
+                android:id="@+id/raw_data_fragment"
+                ></fragment>
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.mmittek.motogym.FragmentViz2D"
+                android:id="@+id/viz2d_fragment"
+                ></fragment>
+
+        </FrameLayout>
+    </LinearLayout>
+
 </android.support.v4.widget.DrawerLayout>

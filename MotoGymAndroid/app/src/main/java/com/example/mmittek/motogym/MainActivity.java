@@ -1,36 +1,27 @@
 package com.example.mmittek.motogym;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
@@ -280,9 +271,6 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
     TextView mCameraInfoTextView;
 
-    Vector2Plot mVectorPlotXY;
-    Vector2Plot mVectorPlotYZ;
-    Vector2Plot mVectorPlotZX;
 
     EditText mRecordLabelEditText;
 
@@ -294,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
         mRecordToggleButton = (ToggleButton)findViewById(R.id.recording_toggle_button);
         mRecordFileNameTextView = (TextView)findViewById(R.id.recorded_file_name_text_view);
 
@@ -306,9 +298,6 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
         mRecordLabelEditText = (EditText)findViewById(R.id.record_label_edit_text);
 
-        mVectorPlotXY = (Vector2Plot) findViewById(R.id.xy_vector_plot);
-        mVectorPlotYZ = (Vector2Plot) findViewById(R.id.yz_vector_plot);
-        mVectorPlotZX = (Vector2Plot) findViewById(R.id.zx_vector_plot);
 
 
         FragmentRawData rawDataFragment = (FragmentRawData)getSupportFragmentManager().findFragmentById(R.id.raw_data_fragment); //(FragmentRawData)findViewById(R.id.raw_data_fragment);
@@ -326,61 +315,11 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         return mDataBuffer;
     }
 
-    public static File writeToExternal(Context context, String filename){
-        try {
-            File file = new File(context.getExternalFilesDir(null), filename); //Get file location from external source
-            InputStream is = new FileInputStream(context.getFilesDir() + File.separator + filename); //get file location from internal
-            OutputStream os = new FileOutputStream(file); //Open your OutputStream and pass in the file you want to write to
-            byte[] toWrite = new byte[is.available()]; //Init a byte array for handing data transfer
-            Log.i("Available ", is.available() + "");
-            int result = is.read(toWrite); //Read the data from the byte array
-            Log.i("Result", result + "");
-            os.write(toWrite); //Write it to the output stream
-            is.close(); //Close it
-            os.close(); //Close it
-            Log.i("Copying to", "" + context.getExternalFilesDir(null) + File.separator + filename);
-            Log.i("Copying from", context.getFilesDir() + File.separator + filename + "");
-            return file;
-        } catch (Exception e) {
-            Toast.makeText(context, "File write failed: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show(); //if there's an error, make a piece of toast and serve it up
-        }
-        return null;
-    }
 
-    public final void shareSelectedFiles(View view) {
-        // Create list of Uris for the selected files
-        ArrayList<Uri> filesToSend = new ArrayList<Uri>();
-        for(int i=0; i<mRecordsArrayAdapter.getCount(); i++) {
-            FileViewModel fileViewModel = mRecordsArrayAdapter.getItem(i);
-            if(!fileViewModel.isSelected()) continue;
-            File file = fileViewModel.getFile();
-            if(file.exists() && file.canRead()) {
-                File exFile = writeToExternal(this, file.getName() );
-                exFile.deleteOnExit();
-                filesToSend.add( Uri.parse("file://" + exFile.getAbsolutePath()) );
-            }
-        }
 
-        if(filesToSend.size() > 0) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-            sendIntent.putExtra(Intent.EXTRA_STREAM, filesToSend);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MotoGym Records");
-            sendIntent.setType("text/csv");
-            startActivity(Intent.createChooser(sendIntent, "SEND TO" ));
-        }
-    }
 
-    public final void deleteSelectedFiles(View view) {
-        for(int i=0; i<mRecordsArrayAdapter.getCount(); i++) {
-            FileViewModel fileViewModel = mRecordsArrayAdapter.getItem(i);
-            if( fileViewModel.isSelected() ) {
-                // delete file
-                fileViewModel.getFile().delete();
-            }
-        }
-        refreshListOfRecords();
-    }
+
+
 
 
 

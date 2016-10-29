@@ -8,11 +8,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
-        android:onClick="deleteSelectedFiles"/>
+        android:id="@+id/records_list_header_delete_button"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share"
-        android:onClick="shareSelectedFiles"/>
+        android:id="@+id/records_list_header_share_button"/>
 </LinearLayout>

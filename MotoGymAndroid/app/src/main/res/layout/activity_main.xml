@@ -10,31 +10,39 @@
     android:paddingTop="8dp"
     tools:context="com.example.mmittek.motogym.MainActivity">
 
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <fragment
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.example.mmittek.motogym.FragmentRecords"
-            android:id="@+id/records_fragment"
-            ></fragment>
-
+            android:layout_height="wrap_content">
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="com.example.mmittek.motogym.FragmentRawData"
             android:id="@+id/raw_data_fragment"
             ></fragment>
+        </FrameLayout>
 
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.mmittek.motogym.FragmentViz2D"
+            android:id="@+id/viz2d_fragment"
+            ></fragment>
+
+        </FrameLayout>
 
 
 
@@ -76,39 +84,17 @@
                 android:id="@+id/recorded_file_name_text_view"/>
         </LinearLayout>
 
-
-
-
-
-
-
-
-
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/xy_vector_plot"/>
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/yz_vector_plot"/>
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/zx_vector_plot"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.mmittek.motogym.FragmentRecords"
+                android:id="@+id/records_fragment"
+                ></fragment>
+        </FrameLayout>
 
 
     </LinearLayout>
-
-
-
-
 </RelativeLayout>
