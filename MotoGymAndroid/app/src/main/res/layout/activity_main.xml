@@ -19,150 +19,66 @@
         android:orientation="vertical">
 
 
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.mmittek.motogym.FragmentRawData"
+            android:id="@+id/raw_data_fragment"
+            ></fragment>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.mmittek.motogym.FragmentViz2D"
+            android:id="@+id/viz2d_fragment"
+            ></fragment>
+
+        </FrameLayout>
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Sampling:"/>
-            <android.support.v7.widget.AppCompatSpinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sensor_delay_spinner">
-            </android.support.v7.widget.AppCompatSpinner>
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_x"/>
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_y"/>
+            <com.example.mmittek.motogym.AnglePlot
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/angle_plot_z"/>
 
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recording"/>
-
-            <EditText
-                android:layout_width="@dimen/record_label_edit_text_width"
-                android:layout_height="wrap_content"
-                android:id="@+id/record_label_edit_text"
-                android:inputType="textNoSuggestions"
-                android:imeOptions="actionDone"></EditText>
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/recording_toggle_button"
-                android:onClick="toggleRecording"
-                android:textOff="Record"
-                android:textOn="Stop"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/records_counter_text_view"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/recorded_file_name_text_view"/>
-        </LinearLayout>
 
 
-
-
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:id="@+id/camera_info_text_view"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_accelerometer_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_gyroscope_text_view"/>
-
-
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_linear_accelerometer_text_view"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_rotation_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_magnetic_field_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_gravity_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/orient_angles_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/orient_angles_degs_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rotation_matrix_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/location_text_view"/>
-
-
-
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/xy_vector_plot"/>
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/yz_vector_plot"/>
-            <com.example.mmittek.motogym.Vector2Plot
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/zx_vector_plot"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.example.mmittek.motogym.FragmentRecords"
+                android:id="@+id/records_fragment"
+                ></fragment>
+        </FrameLayout>
 
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recorded_files_list_view">
-        </ListView>
     </LinearLayout>
-
-
-
-
 </RelativeLayout>

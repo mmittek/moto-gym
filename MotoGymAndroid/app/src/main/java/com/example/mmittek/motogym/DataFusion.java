@@ -1,4 +1,8 @@
 package com.example.mmittek.motogym;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+
 import java.util.Observable;
 
 
@@ -6,7 +10,7 @@ import java.util.Observable;
  * Created by mmittek on 10/28/16.
  */
 
-public class DataFusion extends Observable {
+public class DataFusion extends Observable implements SensorEventListener {
 
     double mAlpha = 0.8;
     double[] mGravity;
@@ -15,19 +19,26 @@ public class DataFusion extends Observable {
     double[] mAbsoluteOrientation;
     double[] mAbsoluteAcceleration;
 
+    double[] mAngle;
+    long mLastAngleTimestamp;
+
     long mPrevAccSampleTimestamp;
     double mAccSamplingRateSPS;
 
     public DataFusion() {
+        reset();
+    }
 
+    public void reset() {
         mGravity = new double[]{0,0,0};
         mLinearAcceleration = new double[]{0,0,0};
         mMagneticField = new double[]{0,0,0};
         mAbsoluteOrientation = new double[]{0,0,0};
         mAbsoluteAcceleration = new double[]{0,0,0};
-
+        mAngle = new double[]{0,0,0};
         mPrevAccSampleTimestamp = 0;
         mAccSamplingRateSPS = 0;
+        mLastAngleTimestamp = 0;
     }
 
     public final double getAccSamplingRate() {
@@ -64,6 +75,10 @@ public class DataFusion extends Observable {
 
     }
 
+    public final double getMagnitude(final float[] vec) {
+        return Math.sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+    }
+
     public final double[] getAbsoluteAcceleration() {
         return mAbsoluteAcceleration;
     }
@@ -94,5 +109,40 @@ public class DataFusion extends Observable {
 
     public final double[] getGravity() {
         return mGravity;
+    }
+
+
+    public final double[] getAngle() {
+        return mAngle;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        int sensorType = sensorEvent.sensor.getType();
+        if(sensorType == Sensor.TYPE_ACCELEROMETER) {
+
+        } else if(sensorType == Sensor.TYPE_GYROSCOPE) {
+
+            if(mLastAngleTimestamp == 0) {
+                for(int i=0; i<3; i++) {
+                    mAngle[i] = sensorEvent.values[i];
+                }
+            } else {
+                double magnitude = getMagnitude( sensorEvent.values );
+                double dt =   (sensorEvent.timestamp/1000000L - mLastAngleTimestamp)/16.0;
+                for(int i=0; i<3; i++) {
+                    mAngle[i] += sensorEvent.values[i]*dt;   // rectangular term
+                }
+
+            }
+            mLastAngleTimestamp = sensorEvent.timestamp/1000000L;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }

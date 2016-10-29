@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="MotoGymLogo.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -53,26 +53,6 @@
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3761"
-       id="linearGradient3767"
-       x1="177.51967"
-       y1="934.1532"
-       x2="39.540421"
-       y2="895.89191"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.66821137,-0.1790467,0.1790467,0.66821137,-157.58843,259.55589)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3773"
-       id="linearGradient3771"
-       gradientUnits="userSpaceOnUse"
-       x1="177.51967"
-       y1="934.1532"
-       x2="39.540421"
-       y2="895.89191"
-       gradientTransform="matrix(1.1722929,0.31411492,-0.31411492,1.1722929,422.89823,-124.52407)" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3773"
        id="linearGradient3781"
        gradientUnits="userSpaceOnUse"
@@ -91,16 +71,6 @@
        x2="39.540421"
        y2="895.89191"
        gradientTransform="translate(-258.57143,10)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3791"
-       id="linearGradient3789"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.9932003,0,0,0.9932003,45.163427,23.986889)"
-       x1="177.51967"
-       y1="934.1532"
-       x2="39.540421"
-       y2="895.89191" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -110,7 +80,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="-5.7356219"
+     inkscape:cx="-2.878479"
      inkscape:cy="230.3322"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -130,7 +100,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -139,8 +109,17 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-752.36218)">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:2.02951598;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3773"
+       width="292.8302"
+       height="292.8302"
+       x="4.3126802"
+       y="756.67487"
+       ry="30.442741"
+       rx="30.442741" />
     <path
-       style="fill:url(#linearGradient3767);fill-opacity:1;stroke:#000000;stroke-width:3.6496489;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#0000ff;fill-opacity:1;stroke:#ffffff;stroke-width:3.64964889999999986;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 13.764353,767.0678 2.053305,49.25531 3.045939,73.28088 -8.378758,2.24508 c -0.9256192,0.24802 -1.3853422,1.51822 -1.0253662,2.86167 l 1.9508512,7.28068 c 0.359986,1.34348 1.39677,2.2269 2.322389,1.97888 l 86.04446,-23.05555 c 0.925627,-0.24802 1.381787,-1.53146 1.021807,-2.87495 l -1.950847,-7.28068 c -0.35998,-1.34345 -1.3932,-2.21362 -2.31883,-1.9656 l -8.36962,2.24264 -34.002578,-64.98608 -22.849437,-43.683 z"
        id="path2985"
        inkscape:connector-curvature="0"
@@ -162,36 +141,38 @@
        inkscape:connector-curvature="0"
        id="path3787"
        d="m 94.207773,791.4719 -15.45525,69.06977 -23.006276,102.75689 -12.453829,3e-5 c -1.375792,-3e-5 -2.485323,1.59064 -2.485343,3.58755 l -9e-6,10.8217 c -6e-6,1.9969 1.109534,3.6073 2.485326,3.6073 l 127.892768,-1e-4 c 1.3758,1e-4 2.48533,-1.6104 2.4853,-3.6072 l 3e-5,-10.82167 c 1e-5,-1.99691 -1.10953,-3.58749 -2.48533,-3.58752 l -12.44023,-4e-5 -23.00631,-102.75704 -15.45523,-69.06967 z"
-       style="fill:url(#linearGradient3789);fill-opacity:1;stroke:#000000;stroke-width:5.23983812;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:#ffd100;fill-opacity:1;stroke:#ffffff;stroke-width:5.23983811999999993;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <path
        sodipodi:nodetypes="cccsssssssscccc"
        inkscape:connector-curvature="0"
        id="path3769"
        d="m 238.05721,796.86387 -40.08647,76.63633 -59.65324,114.0099 -14.69949,-3.93872 c -1.62388,-0.43511 -3.43656,1.0915 -4.06809,3.44842 l -3.42252,12.77302 c -0.63156,2.35708 0.16873,4.60858 1.79263,5.04378 l 150.9542,40.4479 c 1.6239,0.4351 3.44279,-1.1147 4.07434,-3.4716 l 3.42252,-12.773 c 0.63154,-2.3569 -0.17497,-4.5853 -1.79887,-5.0205 l -14.68344,-3.9344 5.34371,-128.56207 3.60226,-86.41225 z"
-       style="fill:url(#linearGradient3771);fill-opacity:1;stroke:#000000;stroke-width:6.40285063;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       style="fill:#ff2a2a;fill-opacity:1;stroke:#ffffff;stroke-width:6.40285062999999965;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <text
        xml:space="preserve"
-       style="font-size:85.52270508px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.46367741;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Impact;-inkscape-font-specification:Impact Bold"
-       x="11.750412"
-       y="928.43671"
+       style="font-size:103.58789824999999496px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Impact;-inkscape-font-specification:Impact Bold"
+       x="18.048613"
+       y="1005.3489"
        id="text3797"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       transform="scale(1.082685,0.92362968)"><tspan
          sodipodi:role="line"
          id="tspan3799"
-         x="11.750412"
-         y="928.43671"
-         style="stroke-width:3.46367741">MOTO</tspan></text>
+         x="18.048613"
+         y="1005.3489"
+         style="fill:#ffffff;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none">MOTO</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:108.66992188px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.46367741;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Impact;-inkscape-font-specification:Impact Bold"
-       x="11.687631"
-       y="1020.7663"
+       style="font-size:131.62455750000000876px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Impact;-inkscape-font-specification:Impact Bold"
+       x="17.972569"
+       y="1117.1815"
        id="text3801"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       transform="scale(1.082685,0.92362968)"><tspan
          sodipodi:role="line"
          id="tspan3803"
-         x="11.687631"
-         y="1020.7663"
-         style="stroke-width:3.46367741">GYM</tspan></text>
+         x="17.972569"
+         y="1117.1815"
+         style="fill:#ffffff;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none">GYM</tspan></text>
   </g>
 </svg>
