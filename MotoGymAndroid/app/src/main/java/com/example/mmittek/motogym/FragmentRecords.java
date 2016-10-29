@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Observable;
 
 
@@ -70,6 +72,7 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
     ListView mRecordsListView;
     Button mDeleteButton;
     Button mShareButton;
+    ToggleButton mRecordToggleButton;
 
 
     @Override
@@ -125,6 +128,9 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
                 return listItem;
             }
         };
+
+        mRecordToggleButton = (ToggleButton) view.findViewById(R.id.recording_toggle_button);
+        mRecordToggleButton.setOnClickListener(this);
 
         View headerView = getLayoutInflater(null).inflate(R.layout.records_list_header, mRecordsListView, false);
         mDeleteButton = (Button)headerView.findViewById(R.id.records_list_header_delete_button);
@@ -195,12 +201,47 @@ public class FragmentRecords extends Fragment implements View.OnClickListener {
         return null;
     }
 
+    public void toggleRecording(View view) {
+        boolean state = mRecordToggleButton.isChecked();
+
+        if(state) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    }
+
+
+    protected boolean startRecording() {
+        return true;
+    }
+
+    protected void stopRecording() {
+    }
+
+    public static String getCurrentTimestampString() {
+        Calendar calendar = Calendar.getInstance();
+
+        String timestampString = "" + calendar.get(Calendar.YEAR) +
+                String.format("%02d", calendar.get(Calendar.MONTH)) +
+                String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + "_" +
+                String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) +
+                String.format("%02d", calendar.get(Calendar.MINUTE)) +
+                String.format("%02d", calendar.get(Calendar.SECOND)) + "_"  +
+                String.format("%03d", calendar.get(Calendar.MILLISECOND));
+        return timestampString;
+    }
+
     @Override
     public void onClick(View view) {
         if(view == mDeleteButton) {
             deleteSelectedFiles();
         } else if(view == mShareButton) {
             shareSelectedFiles();
+        } else if(view == mRecordToggleButton) {
+            toggleRecording(mRecordToggleButton);
+
+
         }
     }
 }

@@ -20,11 +20,10 @@ import android.widget.ToggleButton;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.example.mmittek.motogym.FragmentRecords.getCurrentTimestampString;
 
 
 class DataBuffer extends Observable {
@@ -315,34 +314,6 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         return mDataBuffer;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-    */
-
-    /*
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mSensorManager.unregisterListener(this);
-    }
-*/
-
     protected String getDefaultFilename(String postfix) {
         String defaultFilename;
         if((postfix == null) || (postfix.length() == 0)) {
@@ -354,87 +325,8 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         return defaultFilename;
     }
 
-    protected void refreshListOfRecords() {
-        /*
-        String[] fileNames = getFilesDir().list();
-        mRecordsArrayAdapter.clear();
-        for(String fileName: fileNames) {
-            File f = new File( getFilesDir(), fileName );
-            mRecordsArrayAdapter.add( new FileViewModel(f) );
-        }
-        mRecordsArrayAdapter.notifyDataSetChanged();
-        */
-    }
 
 
-    protected boolean startRecording() {
-        String postfix = mRecordLabelEditText.getText().toString();
-
-        String fileName = getDefaultFilename(postfix);
-
-
-        mFile = new File(getFilesDir(), fileName);
-        try {
-            if (!mFile.createNewFile() || !mFile.canWrite()) {
-                return false;
-            }
-
-            mBufferedWriter = new BufferedWriter(new FileWriter( mFile ));
-            String csvHeader = mDataBuffer.getCSVHeader();
-            mBufferedWriter.write( csvHeader );
-
-            mDataBuffer.reset();
-            mDataBuffer.addObserver(this);
-
-            refreshListOfRecords();
-            return true;
-        }catch(IOException e) {
-        }
-        return false;
-    }
-
-    protected void stopRecording() {
-        mDataBuffer.deleteObservers();
-
-        try {
-            mBufferedWriter.flush();
-            mBufferedWriter.close();
-            mBufferedWriter = null;
-            mFile = null;
-        }catch(IOException e) {
-        }
-
-        refreshListOfRecords();
-
-    }
-
-    public static String getCurrentTimestampString() {
-        Calendar calendar = Calendar.getInstance();
-
-        String timestampString = "" + calendar.get(Calendar.YEAR) +
-                String.format("%02d", calendar.get(Calendar.MONTH)) +
-                String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + "_" +
-                String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) +
-                String.format("%02d", calendar.get(Calendar.MINUTE)) +
-                String.format("%02d", calendar.get(Calendar.SECOND)) + "_"  +
-                String.format("%03d", calendar.get(Calendar.MILLISECOND));
-        return timestampString;
-    }
-
-
-
-
-    public void toggleRecording(View view) {
-        if(view != mRecordToggleButton) return;
-        boolean state = mRecordToggleButton.isChecked();
-
-        if(state) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
-
-    }
 
     @Override
     public void onClick(View view) {
