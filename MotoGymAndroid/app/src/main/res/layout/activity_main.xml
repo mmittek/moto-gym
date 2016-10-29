@@ -10,29 +10,35 @@
     android:paddingTop="8dp"
     tools:context="com.example.mmittek.motogym.MainActivity">
 
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
-        <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:name="com.example.mmittek.motogym.FragmentRecords"
+            android:id="@+id/records_fragment"
+            ></fragment>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Sampling:"/>
-            <android.support.v7.widget.AppCompatSpinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sensor_delay_spinner">
-            </android.support.v7.widget.AppCompatSpinner>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.example.mmittek.motogym.FragmentRawData"
+            android:id="@+id/raw_data_fragment"
+            ></fragment>
 
-        </LinearLayout>
+    </FrameLayout>
+
+
+
+
 
 
         <LinearLayout
@@ -74,62 +80,7 @@
 
 
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:id="@+id/camera_info_text_view"/>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_accelerometer_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_gyroscope_text_view"/>
-
-
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_linear_accelerometer_text_view"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sensors_rotation_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_magnetic_field_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sensors_gravity_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/orient_angles_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/orient_angles_degs_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rotation_matrix_text_view"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/location_text_view"/>
 
 
 
@@ -155,11 +106,6 @@
         </LinearLayout>
 
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recorded_files_list_view">
-        </ListView>
     </LinearLayout>
 
 
