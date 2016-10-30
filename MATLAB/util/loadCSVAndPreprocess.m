@@ -19,6 +19,8 @@ function [data] = loadCSVAndPreprocess(csvFilename)
     end
     data = datam;
 
+    data(isnan(data)) = 0;
+    
     % Quality control and threshold
 %     gps = data(:, end-3:end);
 %     idx = find( gps(:,4) < 12 & gps(:,1) ~=0  & gps(:,2) ~= 0);
