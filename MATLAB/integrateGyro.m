@@ -1,6 +1,6 @@
 init;
 if ~exist('dataLoaded')
-    csvFilename = '/Users/mmittek/Desktop/20160929_201811_763_home.csv';
+    csvFilename = '../Data/20161002_115147_542_90.csv';
     data = loadCSVAndPreprocess(csvFilename);
    % data = data(2204:end,:);
     data(:,1) = data(:,1) - data(1,1);
@@ -29,6 +29,7 @@ gravDelay = 25;
 
 angle = zeros(1,3);
 box = makeBox(0.5,1,4);
+grav = zeros(1,3);
 for i=2:size(data,1)
     dt = (data(i,1)-data(i-1,1));    % go to seconds
     angle = angle + data(i,[GYROX, GYROY, GYROZ])*dt/1000;

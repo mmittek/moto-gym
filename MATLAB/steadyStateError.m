@@ -1,5 +1,5 @@
 init;
-data = loadCSVAndPreprocess('/Users/mmittek/Desktop/20160930_030744_393_fb.csv');
+data = loadCSVAndPreprocess('../Data/20161002_115147_542_90.csv');
 
 idx = [ ACCX, ACCY, ACCZ, GYROX, GYROY, GYROZ, MAGX, MAGY, MAGZ ]
 values = data(idx, idx);
