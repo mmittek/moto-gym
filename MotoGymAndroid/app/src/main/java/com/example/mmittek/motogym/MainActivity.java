@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     TextView mRecordFileNameTextView;
     EditText mRecordLabelEditText;
     DataFusion mDataFusion;
+    SensorFusion mSensorFusion;
 
 
     SensorManager mSensorManager;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +55,18 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        mSensorFusion = new SensorFusion(mSensorManager);
+
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mLinearAcceleration = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mRotation = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         mMagneticField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+
+        FragmentViz2D viz2DFragment = (FragmentViz2D)  getSupportFragmentManager().findFragmentById(R.id.viz2d_fragment);
+        mSensorFusion.addObserver( viz2DFragment );
 
 
         FragmentRawData rawDataFragment = (FragmentRawData)getSupportFragmentManager().findFragmentById(R.id.raw_data_fragment);
@@ -78,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         registerListeners( mDataFusion, SensorManager.SENSOR_DELAY_FASTEST );
         mDataFusion.addObserver(this);
 
+
+        registerListeners(mSensorFusion, SensorManager.SENSOR_DELAY_FASTEST);
 
         mAnglePlotX = (AnglePlot) findViewById(R.id.angle_plot_x);
         mAnglePlotY = (AnglePlot) findViewById(R.id.angle_plot_y);
@@ -152,17 +160,17 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     @Override
     public void update(Observable observable, Object o) {
 
-    if(observable == mDataFusion) {
-        double[] gravity = mDataFusion.getGravity();
-        double[] linearAcceleration = mDataFusion.getLinearAcceleration();
-        double[] magneticField = mDataFusion.getMagneticField();
-        double[] absoluteOrientation = mDataFusion.getAbsoluteOrientation();
-        double[] vec = absoluteOrientation;
-        double[] angle = mDataFusion.getAngle();
+        if(observable == mDataFusion) {
+            double[] gravity = mDataFusion.getGravity();
+            double[] linearAcceleration = mDataFusion.getLinearAcceleration();
+            double[] magneticField = mDataFusion.getMagneticField();
+            double[] absoluteOrientation = mDataFusion.getAbsoluteOrientation();
+            double[] vec = absoluteOrientation;
+            double[] angle = mDataFusion.getAngle();
 
-        mAnglePlotX.setAngle( (float)angle[0] );
-        mAnglePlotY.setAngle( (float)angle[1] );
-        mAnglePlotZ.setAngle( (float)angle[2] );
+            mAnglePlotX.setAngle( (float)angle[0] );
+            mAnglePlotY.setAngle( (float)angle[1] );
+            mAnglePlotZ.setAngle( (float)angle[2] );
         }
     }
 }

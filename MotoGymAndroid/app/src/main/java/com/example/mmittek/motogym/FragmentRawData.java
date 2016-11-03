@@ -17,11 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Created by mmittek on 10/28/16.
  */
 
-public class FragmentRawData extends Fragment  implements SensorEventListener, Spinner.OnItemSelectedListener, LocationListener {
+public class FragmentRawData extends Fragment  implements Observer, SensorEventListener, Spinner.OnItemSelectedListener, LocationListener {
 
 
     long sampleCounter = 0;
@@ -221,4 +224,14 @@ public class FragmentRawData extends Fragment  implements SensorEventListener, S
 
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if(observable instanceof SensorFusion) {
+            SensorFusion sensorFusion = (SensorFusion)observable;
+
+
+
+
+        }
+    }
 }

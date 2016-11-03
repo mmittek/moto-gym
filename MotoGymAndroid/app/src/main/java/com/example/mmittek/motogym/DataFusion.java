@@ -19,6 +19,7 @@ public class DataFusion extends Observable implements SensorEventListener {
     double[] mAbsoluteOrientation;
     double[] mAbsoluteAcceleration;
 
+
     double[] mAngle;
     long mLastAngleTimestamp;
 
@@ -35,6 +36,7 @@ public class DataFusion extends Observable implements SensorEventListener {
         mMagneticField = new double[]{0,0,0};
         mAbsoluteOrientation = new double[]{0,0,0};
         mAbsoluteAcceleration = new double[]{0,0,0};
+
         mAngle = new double[]{0,0,0};
         mPrevAccSampleTimestamp = 0;
         mAccSamplingRateSPS = 0;
@@ -121,6 +123,9 @@ public class DataFusion extends Observable implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         int sensorType = sensorEvent.sensor.getType();
+
+
+
         if(sensorType == Sensor.TYPE_ACCELEROMETER) {
 
         } else if(sensorType == Sensor.TYPE_GYROSCOPE) {
