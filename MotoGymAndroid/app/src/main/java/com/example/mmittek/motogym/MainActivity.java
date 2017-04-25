@@ -1,6 +1,9 @@
 package com.example.mmittek.motogym;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     DataFusion mDataFusion;
     SensorFusion mSensorFusion;
 
+    BluetoothAdapter mBluetoothAdapter;
 
     SensorManager mSensorManager;
     Sensor mAccelerometer;
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
     Sensor mMagneticField;
     Sensor mGravity;
     Sensor mGyroscope;
+    Sensor mStationaryDetect;
 
     AnglePlot mAnglePlotX;
     AnglePlot mAnglePlotY;
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mBluetoothAdapter = initializeBluetooth();
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         mSensorFusion = new SensorFusion(mSensorManager);
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         mGravity =  mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
+        mStationaryDetect = mSensorManager.getDefaultSensor(Sensor.TYPE_STATIONARY_DETECT);
 
         FragmentViz2D viz2DFragment = (FragmentViz2D)  getSupportFragmentManager().findFragmentById(R.id.viz2d_fragment);
         mSensorFusion.addObserver( viz2DFragment );
@@ -173,4 +181,32 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
             mAnglePlotZ.setAngle( (float)angle[2] );
         }
     }
+
+
+    private BluetoothAdapter initializeBluetooth() {
+
+        BluetoothAdapter mBluetoothAdapter;
+
+        String[] requiredPermissions = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
+
+//        requestPermissions( requiredPermissions ,1);
+
+        // Use this check to determine whether BLE is supported on the device. Then
+        // you can selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            return null;
+        }
+        // Initializes Bluetooth adapter.
+        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        // Ensures Bluetooth is available on the device and it is enabled. If not,
+        // displays a dialog requesting user permission to enable Bluetooth.
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
+        }
+        return mBluetoothAdapter;
+    }
+
 }
